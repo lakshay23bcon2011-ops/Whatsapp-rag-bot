@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- App Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🤖 WA RAG Bot"
+            android:textSize="28sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AI-Powered WhatsApp Auto-Reply"
+            android:textSize="14sp"
+            android:textColor="#888888"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Section: Notification Access -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Step 1: Grant Notification Access"
+            android:textSize="16sp"
+            android:textColor="#BB86FC"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="The bot needs to read WhatsApp notifications to work. Tap below and enable 'WA RAG Bot Listener'."
+            android:textSize="13sp"
+            android:textColor="#AAAAAA"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnGrantAccess"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="🔓 Grant Notification Access"
+            android:textSize="15sp"
+            android:backgroundTint="#BB86FC"
+            android:textColor="#000000"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Section: Server URL -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Step 2: Server URL"
+            android:textSize="16sp"
+            android:textColor="#BB86FC"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter the URL of your RAG server. Include the full URL (e.g., http://192.168.1.5:8000 or https://your-bot.onrender.com)"
+            android:textSize="13sp"
+            android:textColor="#AAAAAA"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/editServerUrl"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="http://192.168.1.5:8000"
+            android:textSize="15sp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#666666"
+            android:background="@android:color/transparent"
+            android:padding="12dp"
+            android:inputType="textUri"
+            android:singleLine="true"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Divider line under the EditText -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#333333"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnTestConnection"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="🔌 Test Connection"
+            android:textSize="14sp"
+            android:backgroundTint="#333333"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Section: Enable Bot -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Step 3: Enable Bot"
+            android:textSize="16sp"
+            android:textColor="#BB86FC"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Auto-Reply Bot"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF" />
+
+            <Switch
+                android:id="@+id/switchBotEnabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumbTint="#BB86FC"
+                android:trackTint="#555555" />
+
+        </LinearLayout>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/btnSaveSettings"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="💾 Save Settings"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#03DAC5"
+            android:textColor="#000000"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Status Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textSize="16sp"
+            android:textColor="#BB86FC"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Loading..."
+            android:textSize="14sp"
+            android:textColor="#CCCCCC"
+            android:background="#1E1E1E"
+            android:padding="16dp"
+            android:lineSpacingMultiplier="1.4"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="16dp" />
+
+    </LinearLayout>
+
+</ScrollView>

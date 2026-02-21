@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.yourname.whatsappautobot">
+
+    <!-- Internet permission for HTTP requests to your server -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Allow cleartext (HTTP) traffic during development -->
+    <!-- IMPORTANT: Remove this and use HTTPS in production! -->
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="WA RAG Bot"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Material3.DayNight.NoActionBar"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <!-- Main Activity (Settings UI) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="WA RAG Bot">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Notification Listener Service -->
+        <!-- This is the core component that intercepts WhatsApp notifications -->
+        <service
+            android:name=".WhatsAppListenerService"
+            android:exported="true"
+            android:label="WA RAG Bot Listener"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

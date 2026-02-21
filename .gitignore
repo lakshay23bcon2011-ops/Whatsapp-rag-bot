@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+
+# Environment variables (contains API keys!)
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sentence Transformers model cache (downloaded at runtime)
+# The model is ~90MB, no need to commit it
+
+# Android
+*.apk
+*.aab
+.gradle/
+local.properties
+*.iml
+app/build/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files from ingestion
+chats/_global_temp.json
+
+# Personal data - training data and chat exports
+lakshay_training_data/
+WhatsApp Chat*/
+chats/*.json
+chats/*.txt
