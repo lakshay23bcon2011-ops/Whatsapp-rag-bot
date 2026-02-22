@@ -351,13 +351,21 @@ async def generate_reply(request: MessageRequest):
     
     logger.info(f"📩 Message from {request.contact_name} ({request.contact_id}): {request.message[:50]}...")
     
-    # Step 1: RAG — find style examples
-    style_examples = search_style_examples(request.contact_id, request.message)
-    logger.info(f"   🔍 RAG: {len(style_examples)} style examples found")
+    try:
+        # Step 1: RAG — find style examples
+        style_examples = search_style_examples(request.contact_id, request.message)
+        logger.info(f"   🔍 RAG: {len(style_examples)} style examples found")
+    except Exception as e:
+        logger.warning(f"   ⚠️  RAG failed: {e}")
+        style_examples = []
     
-    # Step 2: Get conversation history
-    history = get_conversation_history(request.contact_id)
-    logger.info(f"   💬 History: {len(history)} recent messages")
+    try:
+        # Step 2: Get conversation history
+        history = get_conversation_history(request.contact_id)
+        logger.info(f"   💬 History: {len(history)} recent messages")
+    except Exception as e:
+        logger.warning(f"   ⚠️  History fetch failed: {e}")
+        history = []
     
     # Step 3: Build the LLM prompt
     prompt_messages = build_prompt(
@@ -370,9 +378,12 @@ async def generate_reply(request: MessageRequest):
     # Step 4: Call Groq for inference
     reply = call_groq(prompt_messages)
     
-    # Step 5: Save both messages to history
-    save_to_history(request.contact_id, request.contact_name, "user", request.message)
-    save_to_history(request.contact_id, request.contact_name, "assistant", reply)
+    # Step 5: Save both messages to history (don't fail if this fails)
+    try:
+        save_to_history(request.contact_id, request.contact_name, "user", request.message)
+        save_to_history(request.contact_id, request.contact_name, "assistant", reply)
+    except Exception as e:
+        logger.warning(f"   ⚠️  History save failed: {e}")
     
     elapsed_ms = int((time.time() - start_time) * 1000)
     logger.info(f"   ✅ Reply ({elapsed_ms}ms): {reply[:60]}...")
