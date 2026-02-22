@@ -115,11 +115,8 @@ async def lifespan(app: FastAPI):
         logger.error("❌ SUPABASE_URL/SUPABASE_KEY not set! Configure in .env")
         raise RuntimeError("Supabase credentials are required")
     
-    # Load embedding model
-    logger.info("🧮 Loading embedding model (all-MiniLM-L6-v2)...")
-    from sentence_transformers import SentenceTransformer
-    embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-    logger.info("   ✅ Embedding model ready")
+    # Embed model is heavy; load on first request to avoid startup timeouts.
+    logger.info("🧠 Embedding model will load on first request")
     
     # Connect to Supabase
     logger.info("🔗 Connecting to Supabase...")
@@ -161,8 +158,19 @@ app.add_middleware(
 # CORE FUNCTIONS
 # ═══════════════════════════════════════════════════════════
 
+def _ensure_embedding_model() -> None:
+    """Lazy-load the embedding model when needed."""
+    global embedding_model
+    if embedding_model is None:
+        logger.info("🧮 Loading embedding model (all-MiniLM-L6-v2)...")
+        from sentence_transformers import SentenceTransformer
+        embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+        logger.info("   ✅ Embedding model ready")
+
+
 def embed_text(text: str) -> list[float]:
     """Generate a 384-dim embedding for a single text."""
+    _ensure_embedding_model()
     return embedding_model.encode(text).tolist()
 
 
