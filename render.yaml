@@ -11,6 +11,8 @@ services:
         sync: false
       - key: SUPABASE_KEY
         sync: false
+      - key: DISABLE_RAG
+        value: "true"
       - key: SENTENCE_TRANSFORMERS_HOME
         value: "/opt/render/project/.cache"
       - key: PYTHON_VERSION

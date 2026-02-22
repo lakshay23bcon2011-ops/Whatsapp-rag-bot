@@ -39,6 +39,7 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", "8000"))
+DISABLE_RAG = os.getenv("DISABLE_RAG", "false").lower() in {"1", "true", "yes", "on"}
 
 # LLM Settings
 LLM_MODEL = "llama-3.3-70b-versatile"  # Fast, smart, great at following instructions
@@ -116,7 +117,10 @@ async def lifespan(app: FastAPI):
         raise RuntimeError("Supabase credentials are required")
     
     # Embed model is heavy; load on first request to avoid startup timeouts.
-    logger.info("🧠 Embedding model will load on first request")
+    if DISABLE_RAG:
+        logger.warning("⚠️  DISABLE_RAG is enabled — skipping embedding model load")
+    else:
+        logger.info("🧠 Embedding model will load on first request")
     
     # Connect to Supabase
     logger.info("🔗 Connecting to Supabase...")
@@ -161,6 +165,8 @@ app.add_middleware(
 def _ensure_embedding_model() -> None:
     """Lazy-load the embedding model when needed."""
     global embedding_model
+    if DISABLE_RAG:
+        return
     if embedding_model is None:
         logger.info("🧮 Loading embedding model (all-MiniLM-L6-v2)...")
         from sentence_transformers import SentenceTransformer
@@ -181,6 +187,8 @@ def search_style_examples(contact_id: str, message: str, top_k: int = RAG_TOP_K)
     
     Falls back to 'global' collection if contact has no examples.
     """
+    if DISABLE_RAG:
+        return []
     query_embedding = embed_text(message)
     
     try:
