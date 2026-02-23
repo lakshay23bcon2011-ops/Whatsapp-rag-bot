@@ -51,6 +51,9 @@ public class WhatsAppListenerService extends NotificationListenerService {
     private static final String PREFS_NAME = "WABotPrefs";
     private static final String KEY_SERVER_URL = "server_url";
     private static final String KEY_BOT_ENABLED = "bot_enabled";
+    
+    // Default server URL (can be changed in the app settings)
+    private static final String DEFAULT_SERVER_URL = "https://whatsapp-rag-bot-4tnp.onrender.com/reply";
 
     // Thread pool for async network requests (don't block the notification thread)
     private final ExecutorService executor = Executors.newFixedThreadPool(3);
