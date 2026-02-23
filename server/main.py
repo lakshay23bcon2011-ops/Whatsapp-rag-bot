@@ -351,46 +351,15 @@ async def generate_reply(request: MessageRequest):
     
     logger.info(f"📩 Message from {request.contact_name} ({request.contact_id}): {request.message[:50]}...")
     
-    try:
-        # Step 1: RAG — find style examples
-        style_examples = search_style_examples(request.contact_id, request.message)
-        logger.info(f"   🔍 RAG: {len(style_examples)} style examples found")
-    except Exception as e:
-        logger.warning(f"   ⚠️  RAG failed: {e}")
-        style_examples = []
-    
-    try:
-        # Step 2: Get conversation history
-        history = get_conversation_history(request.contact_id)
-        logger.info(f"   💬 History: {len(history)} recent messages")
-    except Exception as e:
-        logger.warning(f"   ⚠️  History fetch failed: {e}")
-        history = []
-    
-    # Step 3: Build the LLM prompt
-    prompt_messages = build_prompt(
-        contact_name=request.contact_name,
-        style_examples=style_examples,
-        conversation_history=history,
-        new_message=request.message,
-    )
-    
-    # Step 4: Call Groq for inference
-    reply = call_groq(prompt_messages)
-    
-    # Step 5: Save both messages to history (don't fail if this fails)
-    try:
-        save_to_history(request.contact_id, request.contact_name, "user", request.message)
-        save_to_history(request.contact_id, request.contact_name, "assistant", reply)
-    except Exception as e:
-        logger.warning(f"   ⚠️  History save failed: {e}")
+    # Simple hardcoded reply for testing (remove Groq dependency temporarily)
+    reply = "hnn bhai sab badhiya"
     
     elapsed_ms = int((time.time() - start_time) * 1000)
-    logger.info(f"   ✅ Reply ({elapsed_ms}ms): {reply[:60]}...")
+    logger.info(f"   ✅ Reply ({elapsed_ms}ms): {reply}")
     
     return MessageResponse(
         reply=reply,
-        rag_examples_used=len(style_examples),
+        rag_examples_used=0,
         response_time_ms=elapsed_ms,
     )
 
@@ -402,6 +371,16 @@ async def health_check():
         "status": "ok",
         "timestamp": datetime.now().isoformat(),
         "model": LLM_MODEL,
+    }
+
+
+@app.post("/test-reply")
+async def test_reply(request: MessageRequest):
+    """Simple test endpoint without Groq/Supabase dependencies."""
+    return {
+        "reply": "hnn bhai sab badhiya",
+        "rag_examples_used": 0,
+        "response_time_ms": 50,
     }
 
 
